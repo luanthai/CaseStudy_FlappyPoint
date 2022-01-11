@@ -7,11 +7,11 @@ let topPole = [new Obstacle(cvs.width + 100, Math.floor(Math.random()*150-300))]
 let botPole = [new Obstacle(cvs.width + 100, topPole[0].y + topPole[0].height + gapPole)];
 
 
-function moveSelection(e){
-    if (e.keyCode === 32){
-        myPoint.y -= 50
-    }
-}
+// function moveSelection(e){
+//     if (e.keyCode === 32){
+//         myPoint.y -= 50
+//     }
+// }
 //bat dau game, ve diem
 function start() {
     ctx.clearReact(0, 0 , cvs.width, cvs.height);
@@ -45,3 +45,5 @@ function pause() {
 function restart(){
 
 }
+
+//Check va cham
