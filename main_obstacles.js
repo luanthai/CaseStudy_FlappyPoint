@@ -1,3 +1,4 @@
+
 class Obstacle {
     x;
     y;
@@ -11,7 +12,7 @@ class Obstacle {
         this.height = 400;
     }
 
-    drawObstacle(){
+    drawObstacle(ctx){
         ctx.fillStyle = "green";
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }

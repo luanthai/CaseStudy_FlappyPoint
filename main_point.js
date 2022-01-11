@@ -1,4 +1,5 @@
-class circle {
+
+class Circle {
     x
     y
     radius
@@ -10,14 +11,16 @@ class circle {
     }
 
     drop() {
-        this.y += 5
+        this.y += 1
     }
 
     jump(){
-        this.y -= 20
+        this.y -= 10
     }
 
     drawCir() {
+        let cvs = document.getElementById("myCanvas");
+        let ctx = cvs.getContext("2d");
         ctx.beginPath()
         ctx.fillStyle = "purple"
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2)
