@@ -8,6 +8,7 @@ let botPole = [new Obstacle(cvs.width + 50, topPole[0].y + topPole[0].height + g
 let score = 0;
 let highScore = 0;
 sessionStorage.setItem('high_score0', highScore);
+let check;
 
 // function moveSelection(e){
 //     if (e.keyCode === 32){
@@ -15,10 +16,24 @@ sessionStorage.setItem('high_score0', highScore);
 //     }
 // }
 //bat dau game, ve diem
-function start() {
+function play(){
     ctx.clearRect(0, 0 , cvs.width, cvs.height);
     myPoint.drawCir();
     myPoint.drop();
+    window.addEventListener("keydown", jumpPoint);
+
+    ctx.fillStyle = "#090909";
+    ctx.font = "24px Dancing Script";
+    ctx.fillText("Score : " + score, 20, cvs.height - 50);
+    ctx.fillText("High Score : " + sessionStorage['high_score' + (sessionStorage.length - 1)], 140, cvs.height - 50);
+    checkHighScore();
+}
+
+window.onload = function() {
+    play()
+}
+
+function start() {
     for (let i = 0; i < topPole.length; i++){
         drawPole(i);
         if (checkPole(i) === false){
@@ -28,13 +43,7 @@ function start() {
             score++;
         }
     }
-    window.addEventListener("keydown", jumpPoint);
-    ctx.fillStyle = "#090909";
-    ctx.font = "24px Dancing Script";
-    ctx.fillText("Score : " + score, 20, cvs.height - 50);
-    ctx.fillText("High Score : " + sessionStorage['high_score' + (sessionStorage.length - 1)], 140, cvs.height - 50);
-    checkHighScore();
-    setInterval(start, 1000)
+    check = setInterval(play, 1000);
 }
 
 //ve cot, chay cot
@@ -84,7 +93,7 @@ function checkPole(i) {
     let topPole_bottom = topPole[i].y + topPole[i].height;
     let botPole_top = botPole[i].y;
 
-    if(myPoint.y <= myPoint.radius || myPoint.y >= cvs,height - myPoint.radius ||
+    if(myPoint.y <= myPoint.radius || myPoint.y >= cvs.height - myPoint.radius ||
         ((myPoint.x - pole_left)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2) && 
         (myPoint.x - pole_right)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2)) ||
         ((myPoint.x - pole_left)**2 + (myPoint.y - botPole_top)**2 <= Math.pow(myPoint.radius,2) && 
@@ -100,4 +109,5 @@ function checkPole(i) {
 function stop(){
     document.getElementById('score__title').innerHTML = `${score}`;
     document.getElementById('body__score').style.display = "block";
+    clearInterval(check);
 }
