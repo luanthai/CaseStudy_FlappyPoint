@@ -18,7 +18,7 @@ class Obstacle {
     }
 
     moveLeft(){
-        this.x -= 1
+        this.x -= 10
         // if (score <= 10){
         //     this.x -= 1;
         // } else {

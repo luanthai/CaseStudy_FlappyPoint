@@ -11,7 +11,7 @@ class Circle {
     }
 
     drop() {
-        this.y += 1
+        this.y += 2
     }
 
     jump(){

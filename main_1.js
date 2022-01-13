@@ -8,7 +8,7 @@ let botPole = [new Obstacle(cvs.width + 50, topPole[0].y + topPole[0].height + g
 let score = 0;
 let highScore = 0;
 sessionStorage.setItem('high_score0', highScore);
-let check;
+let time;
 
 // function moveSelection(e){
 //     if (e.keyCode === 32){
@@ -22,18 +22,6 @@ function play(){
     myPoint.drop();
     window.addEventListener("keydown", jumpPoint);
 
-    ctx.fillStyle = "#090909";
-    ctx.font = "24px Dancing Script";
-    ctx.fillText("Score : " + score, 20, cvs.height - 50);
-    ctx.fillText("High Score : " + sessionStorage['high_score' + (sessionStorage.length - 1)], 140, cvs.height - 50);
-    checkHighScore();
-}
-
-window.onload = function() {
-    play()
-}
-
-function start() {
     for (let i = 0; i < topPole.length; i++){
         drawPole(i);
         if (checkPole(i) === false){
@@ -43,7 +31,22 @@ function start() {
             score++;
         }
     }
-    check = setInterval(play, 1000);
+
+    ctx.fillStyle = "#090909";
+    ctx.font = "24px Dancing Script";
+    ctx.fillText("Score : " + score, 20, cvs.height - 50);
+    ctx.fillText("High Score : " + sessionStorage['high_score' + (sessionStorage.length - 1)], 140, cvs.height - 50);
+    checkHighScore();
+
+    checkPointVsCanvas()
+}
+
+window.onload = function() {
+    play()
+}
+
+function start() {
+    time = setInterval(play, 100);
 }
 
 //ve cot, chay cot
@@ -75,11 +78,16 @@ function checkHighScore() {
 
 function restart(){
     score = 0;
-    myPoint = new Circle (40, 120);
+    myPoint = new Circle(40, 120);
     topPole = [new Obstacle(cvs.width + 50, Math.floor(Math.random()*150-300))];
     botPole = [new Obstacle(cvs.width + 50, topPole[0].y + topPole[0].height + gapPole)];
-    document.getElementById('body__score').style.display = "none";
+    play();
     start();
+}
+
+function stop(){
+    document.getElementById('score_title').innerHTML = `${score}`;
+    clearInterval(time)
 }
 
 //Check va cham
@@ -87,27 +95,51 @@ function restart(){
 // check với cột trên topPole: check 2 cạnh và đáy
 // Check với cột dưới botPole: check 2 cạnh và đỉnh
 
+function checkPointVsCanvas() {
+    if (myPoint.y <= myPoint.radius || myPoint.y >= (cvs.height - myPoint.radius)){
+        clearInterval(time);
+        alert('You die!');
+    }
+}
+
 function checkPole(i) {
+    let Ax = myPoint.x;
+    let Ay = myPoint.y;    
+
     let pole_left = topPole[i].x;
     let pole_right = topPole[i].x + topPole[i].width;
     let topPole_bottom = topPole[i].y + topPole[i].height;
     let botPole_top = botPole[i].y;
 
-    if(myPoint.y <= myPoint.radius || myPoint.y >= cvs.height - myPoint.radius ||
-        ((myPoint.x - pole_left)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2) && 
-        (myPoint.x - pole_right)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2)) ||
-        ((myPoint.x - pole_left)**2 + (myPoint.y - botPole_top)**2 <= Math.pow(myPoint.radius,2) && 
-        (myPoint.x - pole_right)**2 + (myPoint.y - botPole_top)**2 <= Math.pow(myPoint.radius,2)) 
-        ){
-            stop();
-            window.removeEventListener('keydown',jumpPoint);
-            return false;
-            alert('You die!')
-        }
-}
+    if (myPoint.x < pole_left)
+        Ax = pole_left;
+    else if (myPoint.x > pole_right)
+        Ax = pole_right;
 
-function stop(){
-    document.getElementById('score__title').innerHTML = `${score}`;
-    document.getElementById('body__score').style.display = "block";
-    clearInterval(check);
+    if (myPoint.y < botPole_top)
+    Ay = botPole_top;
+    else if (myPoint.y > topPole_bottom)
+    Ay = topPole_bottom;
+
+    let dx = myPoint.x - Ax;
+    let dy = myPoint.y - Ay;
+    
+    if (myPoint.y <= myPoint.radius || myPoint.y >= (cvs.height - myPoint.radius) || ((dx * dx + dy * dy) <= Math.pow(myPoint.radius,2))){
+        stop();
+        window.removeEventListener('keydown',jumpPoint);
+        return false;
+        alert('You die!');
+    }
+    
+    // if(myPoint.y <= myPoint.radius || myPoint.y >= cvs.height - myPoint.radius ||
+    //     ((myPoint.x - pole_left)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2) && 
+    //     (myPoint.x - pole_right)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2)) ||
+    //     ((myPoint.x - pole_left)**2 + (myPoint.y - botPole_top)**2 <= Math.pow(myPoint.radius,2) && 
+    //     (myPoint.x - pole_right)**2 + (myPoint.y - botPole_top)**2 <= Math.pow(myPoint.radius,2)) 
+    //     ){
+    //         stop();
+    //         window.removeEventListener('keydown',jumpPoint);
+    //         return false;
+    //         alert('You die!')
+    //     }
 }
