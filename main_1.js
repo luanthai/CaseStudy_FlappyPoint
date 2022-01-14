@@ -1,8 +1,8 @@
 let cvs = document.getElementById("myCanvas");
 let ctx = cvs.getContext("2d");
 let myPoint = new Circle(50, 300, 10)
-let gapPole = 100;
-let spacePole = 150;
+let gapPole = 120;
+let spacePole = 120;
 let topPole = [new Obstacle(cvs.width + 50, Math.floor(Math.random()*150-300))];
 let botPole = [new Obstacle(cvs.width + 50, topPole[0].y + topPole[0].height + gapPole)];
 let score = 0;
@@ -10,7 +10,7 @@ let highScore = 0;
 sessionStorage.setItem('high_score0', highScore);
 let time;
 
-// function moveSelection(e){
+// function moveSelection(e){s
 //     if (e.keyCode === 32){
 //         myPoint.y -= 50
 //     }
@@ -38,16 +38,16 @@ function play(){
     ctx.fillText("High Score : " + sessionStorage['high_score' + (sessionStorage.length - 1)], 140, cvs.height - 50);
     checkHighScore();
 
-    checkPointVsCanvas()
+    requestAnimationFrame(play)
 }
 
 window.onload = function() {
     play()
 }
 
-function start() {
-    time = setInterval(play, 100);
-}
+// function start() {
+//     time = setInterval(play, 100);
+// }
 
 //ve cot, chay cot
 function drawPole(i){
@@ -59,7 +59,7 @@ function drawPole(i){
     if (topPole[i].x === spacePole){
         let randomY = Math.floor(Math.random()*150 - 300);
         topPole.push(new Obstacle(cvs.width + 50, randomY));
-        botPole.push(new Obstacle(csv.width + 50, randomY + 380 + gapPole));
+        botPole.push(new Obstacle(cvs.width + 50, randomY + 400 + gapPole));
     }
 }
 
@@ -82,12 +82,11 @@ function restart(){
     topPole = [new Obstacle(cvs.width + 50, Math.floor(Math.random()*150-300))];
     botPole = [new Obstacle(cvs.width + 50, topPole[0].y + topPole[0].height + gapPole)];
     play();
-    start();
 }
 
 function stop(){
-    document.getElementById('score_title').innerHTML = `${score}`;
-    clearInterval(time)
+    // document.getElementById('score_title').innerHTML = `${score}`;
+    alert('Your Score is' + score)
 }
 
 //Check va cham
@@ -96,9 +95,9 @@ function stop(){
 // Check với cột dưới botPole: check 2 cạnh và đỉnh
 
 function checkPointVsCanvas() {
-    if (myPoint.y <= myPoint.radius || myPoint.y >= (cvs.height - myPoint.radius)){
-        clearInterval(time);
+    if (myPoint.y - myPoint.radius <= 0 || myPoint.y + myPoint.radius >= cvs.height){
         alert('You die!');
+        return false;
     }
 }
 
@@ -124,22 +123,23 @@ function checkPole(i) {
     let dx = myPoint.x - Ax;
     let dy = myPoint.y - Ay;
     
-    if (myPoint.y <= myPoint.radius || myPoint.y >= (cvs.height - myPoint.radius) || ((dx * dx + dy * dy) <= Math.pow(myPoint.radius,2))){
-        stop();
+    if (myPoint.y - myPoint.radius <= 0 || myPoint.y + myPoint.radius >= cvs.height || ((dx * dx + dy * dy) <= Math.pow(myPoint.radius,2))){
+        // stop();
         window.removeEventListener('keydown',jumpPoint);
-        return false;
         alert('You die!');
+        return false;
+        
     }
     
-    // if(myPoint.y <= myPoint.radius || myPoint.y >= cvs.height - myPoint.radius ||
-    //     ((myPoint.x - pole_left)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2) && 
-    //     (myPoint.x - pole_right)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2)) ||
-    //     ((myPoint.x - pole_left)**2 + (myPoint.y - botPole_top)**2 <= Math.pow(myPoint.radius,2) && 
-    //     (myPoint.x - pole_right)**2 + (myPoint.y - botPole_top)**2 <= Math.pow(myPoint.radius,2)) 
-    //     ){
-    //         stop();
-    //         window.removeEventListener('keydown',jumpPoint);
-    //         return false;
-    //         alert('You die!')
-    //     }
+//     // if(myPoint.y <= myPoint.radius || myPoint.y >= cvs.height - myPoint.radius ||
+//     //     ((myPoint.x - pole_left)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2) && 
+//     //     (myPoint.x - pole_right)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2)) ||
+//     //     ((myPoint.x - pole_left)**2 + (myPoint.y - botPole_top)**2 <= Math.pow(myPoint.radius,2) && 
+//     //     (myPoint.x - pole_right)**2 + (myPoint.y - botPole_top)**2 <= Math.pow(myPoint.radius,2)) 
+//     //     ){
+//     //         stop();
+//     //         window.removeEventListener('keydown',jumpPoint);
+//     //         return false;
+//     //         alert('You die!')
+//     //     }
 }

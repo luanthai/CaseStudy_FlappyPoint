@@ -11,11 +11,11 @@ class Circle {
     }
 
     drop() {
-        this.y += 2
+        this.y += 1
     }
 
     jump(){
-        this.y -= 10
+        this.y -= 20
     }
 
     drawCir() {
