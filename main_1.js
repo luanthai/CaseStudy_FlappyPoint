@@ -130,20 +130,9 @@ function checktopPole(i) {
         alert('You die!');
         return false;
         
-    }  
-    
-//     // if(myPoint.y <= myPoint.radius || myPoint.y >= cvs.height - myPoint.radius ||
-//     //     ((myPoint.x - pole_left)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2) && 
-//     //     (myPoint.x - pole_right)**2 + (myPoint.y - topPole_bottom)**2 <= Math.pow(myPoint.radius,2)) ||
-//     //     ((myPoint.x - pole_left)**2 + (myPoint.y - botPole_top)**2 <= Math.pow(myPoint.radius,2) && 
-//     //     (myPoint.x - pole_right)**2 + (myPoint.y - botPole_top)**2 <= Math.pow(myPoint.radius,2)) 
-//     //     ){
-//     //         stop();
-//     //         window.removeEventListener('keydown',jumpPoint);
-//     //         return false;
-//     //         alert('You die!')
-//     //     }
+    }
 }
+
 function checkBotPole(i) {
     let Bx = myPoint.x;
     let By = myPoint.y;    
